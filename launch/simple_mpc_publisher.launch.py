@@ -45,7 +45,8 @@ def generate_launch_description():
     lat_controller_param = os.path.join(
         get_package_share_directory('simple_mpc_publisher'),
         'config',
-        'mpc.param.yaml'
+        # 'mpc.param.yaml'
+        'pure_pursuit.param.yaml'
     )
 
     lon_controller_param = os.path.join(
@@ -92,11 +93,11 @@ def generate_launch_description():
             ("~/output/lateral_diagnostic", "lateral/diagnostic"),
             ("~/output/slope_angle", "longitudinal/slope_angle"),
             ("~/output/longitudinal_diagnostic", "longitudinal/diagnostic"),
-            ("~/output/control_cmd", "/control/command/control_cmd"),
+            ("~/output/control_cmd", "/control/command/control_cmd_dummy"),
         ],
         parameters=[
             {
-                "lateral_controller_mode": "mpc",
+                "lateral_controller_mode": "pure_pursuit",
                 "longitudinal_controller_mode": "pid",
             },
             nearest_search_param,
@@ -107,11 +108,23 @@ def generate_launch_description():
         ],
         output="screen",
     )
+
+    jkk_mpc = Node(
+        package="ctrl_vehicle_control",
+        executable="ctrl_vehicle_control",
+        parameters=[
+            {"/ctrl/ffGainOffsetGround": 1.0},
+            {"/ctrl/ffGainSlope": 0.1},
+            {"/ctrl/ffLookAheadTime": 1.5},
+            {"/ctrl/steeringAngleLPFilter": 0.7}
+        ]
+    )
     
 
     return LaunchDescription([
         raw_vehicle_converter,
         pacmod_interface,
         simple_mpc_pub,
-        mpc
+        mpc,
+        jkk_mpc
     ])

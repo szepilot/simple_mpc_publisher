@@ -1,9 +1,9 @@
 /**:
   ros__parameters:
-    start_x: 309.187
-    start_y: -1399.296
+    start_x: 433.0
+    start_y: -930.7
 
-    end_x: 384.325
-    end_y: -1483.689
+    end_x: 342.0
+    end_y: -94.0
 
     resolution: 1.0 # meters

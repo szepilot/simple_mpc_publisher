@@ -23,7 +23,7 @@ SimpleMpcPublisher::SimpleMpcPublisher() : Node("simple_mpc_publisher")
     pub_accel_                = this->create_publisher<geometry_msgs::msg::AccelWithCovarianceStamped>("/localization/acceleration", 1);
     pub_gear_                 = this->create_publisher<autoware_auto_vehicle_msgs::msg::GearCommand>("/control/command/gear_cmd", 1);
     pub_operation_mode_state_ = this->create_publisher<autoware_adapi_v1_msgs::msg::OperationModeState>("/system/operation_mode/state", rclcpp::QoS(1).transient_local().reliable());
-    pub_trajectory_visualization_           = this->create_publisher<visualization_msgs::msg::MarkerArray>("/simple_mpc_trajectory", rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
+    pub_trajectory_visualization_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/simple_mpc_trajectory", rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
 
     sub_gps_ = this->create_subscription<geometry_msgs::msg::PoseStamped>("/lexus3/gps/duro/current_pose", 10, std::bind(&SimpleMpcPublisher::gps_callback, this, std::placeholders::_1));
     sub_velocity_ = this->create_subscription<autoware_auto_vehicle_msgs::msg::VelocityReport>(
@@ -68,7 +68,7 @@ SimpleMpcPublisher::SimpleMpcPublisher() : Node("simple_mpc_publisher")
         tp.pose.orientation = tf2::toMsg(quat_tf);
 
         // speed
-        tp.longitudinal_velocity_mps = 20 / 3.6;
+        tp.longitudinal_velocity_mps = 40 / 3.6;
 
         // tp.lateral_velocity_mps;
         // tp.acceleration_mps2;
